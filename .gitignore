@@ -1,0 +1,7 @@
+# Local environment settings
+.env
+.env.local
+.env.*.local
+
+# Vercel project metadata
+.vercel
