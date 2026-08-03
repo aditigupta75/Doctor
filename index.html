@@ -193,7 +193,7 @@
 
 
   /* ---------- Procedure / training grid ---------- */
-  .training-layout{display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,.42fr); gap:28px; align-items:stretch;}
+  .training-layout{display:grid; grid-template-columns:1fr; gap:28px;}
   .grid-cards{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); width:100%;}
   .card{background:var(--white); padding:30px 26px; transition:background .3s ease, transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow .3s ease;}
   .card:hover{background:var(--red-tint); transform:translateY(-6px); box-shadow:0 12px 32px rgba(200,30,58,0.15);}
@@ -201,7 +201,7 @@
   .card:hover .card-icon{transform:scale(1.15) rotate(8deg);}
   .card h3{font-size:16.5px; margin:0 0 10px; font-weight:600;}
   .card p{font-size:14px; color:var(--ink-soft); margin:0;}
-  .care-sketch{position:relative; overflow:hidden; align-self:start; aspect-ratio:1/1; width:100%; background:#ece0c8; border:1px solid var(--line); isolation:isolate;}
+  .care-sketch{position:relative; overflow:hidden; align-self:start; aspect-ratio:21/9; width:100%; background:#ece0c8; border:1px solid var(--line); isolation:isolate;}
   .care-sketch img{width:100%; height:100%; display:block; object-fit:contain; object-position:center; mix-blend-mode:multiply; transition:transform .7s cubic-bezier(.2,.7,.2,1);}
   .care-sketch:hover img{transform:scale(1.045) rotate(1deg);}
   .care-sketch-label{position:absolute; left:18px; right:18px; bottom:18px; z-index:1; padding:13px 14px; background:rgba(255,255,255,.91); border-left:3px solid var(--red); box-shadow:0 8px 24px rgba(23,24,26,.08);}
