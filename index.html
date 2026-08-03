@@ -72,11 +72,16 @@
   .lifescan-grid{position:absolute; inset:0;
     background-image:linear-gradient(rgba(200,30,58,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(200,30,58,0.055) 1px, transparent 1px);
     background-size:34px 34px; mask-image:radial-gradient(ellipse 80% 70% at 60% 30%, #000 40%, transparent 85%); opacity:0.65;}
-  .lifescan-beam{position:absolute; top:0; bottom:0; width:220px;
+  .lifescan-beam{position:absolute; top:0; bottom:0; width:min(220px, 22vw); min-width:120px;
     background:linear-gradient(90deg, rgba(200,30,58,0) 0%, rgba(200,30,58,0.09) 45%, rgba(200,30,58,0.16) 50%, rgba(200,30,58,0.09) 55%, rgba(200,30,58,0) 100%);
-    animation:beam-sweep 7s linear infinite; opacity:0.6;}
-  @keyframes beam-sweep{ 0%{ left:-220px; } 100%{ left:100%; } }
+    animation:beam-sweep 6s linear infinite; opacity:0.6; left:-22vw;}
+  @keyframes beam-sweep{ 0%{ left:-22vw; } 100%{ left:100%; } }
   .lifescan-wave{position:absolute; left:0; right:0; bottom:8%; height:120px; opacity:0.35;}
+  @media (min-width:1024px){
+    .lifescan-grid{opacity:0.85;}
+    .lifescan-beam{opacity:0.8;}
+    .lifescan-wave{opacity:0.5;}
+  }
   .lifescan-wave svg{width:220%; height:100%; animation:wave-scroll 9s linear infinite;}
   @keyframes wave-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
   .lifescan-wave path{ fill:none; stroke:var(--red); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; opacity:0.65;}
@@ -102,12 +107,12 @@
 
   /* ---------- Avatar / 3D wave card ---------- */
   .avatar-stage{ perspective:1400px; display:flex; justify-content:center; position:relative; }
-  .avatar-glow{ position:absolute; width:420px; height:420px; left:50%; top:50%; transform:translate(-50%,-50%);
+  .avatar-glow{ position:absolute; width:clamp(340px, 34vw, 520px); height:clamp(340px, 34vw, 520px); left:50%; top:50%; transform:translate(-50%,-50%);
     background:radial-gradient(circle, rgba(200,30,58,0.16) 0%, rgba(200,30,58,0) 68%);
     filter:blur(4px); animation:glow-pulse 4.4s ease-in-out infinite; pointer-events:none; z-index:0; }
   @keyframes glow-pulse{ 0%,100%{ opacity:0.6; transform:translate(-50%,-50%) scale(0.94);} 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.06);} }
   .avatar-card{
-    position:relative; width:min(340px, 82vw); border-radius:18px; overflow:visible; z-index:1;
+    position:relative; width:clamp(280px, 82vw, 430px); border-radius:18px; overflow:visible; z-index:1;
     transform-style:preserve-3d;
     animation:float 5s ease-in-out infinite;
   }
@@ -196,14 +201,13 @@
   .card:hover .card-icon{transform:scale(1.15) rotate(8deg);}
   .card h3{font-size:16.5px; margin:0 0 10px; font-weight:600;}
   .card p{font-size:14px; color:var(--ink-soft); margin:0;}
-  .care-sketch{position:relative; overflow:hidden; min-height:100%; background:#f8f5eb; border:1px solid var(--line); isolation:isolate;}
-  .care-sketch img{width:100%; height:100%; min-height:460px; display:block; object-fit:cover; object-position:center; mix-blend-mode:multiply; transition:transform .7s cubic-bezier(.2,.7,.2,1);}
+  .care-sketch{position:relative; overflow:hidden; align-self:start; aspect-ratio:1/1; width:100%; background:#ece0c8; border:1px solid var(--line); isolation:isolate;}
+  .care-sketch img{width:100%; height:100%; display:block; object-fit:cover; object-position:center; mix-blend-mode:multiply; transition:transform .7s cubic-bezier(.2,.7,.2,1);}
   .care-sketch:hover img{transform:scale(1.045) rotate(1deg);}
   .care-sketch-label{position:absolute; left:18px; right:18px; bottom:18px; z-index:1; padding:13px 14px; background:rgba(255,255,255,.91); border-left:3px solid var(--red); box-shadow:0 8px 24px rgba(23,24,26,.08);}
   .care-sketch-label span{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--red-deep); margin-bottom:3px;}
   .care-sketch-label b{font-family:var(--serif); font-size:18px; font-weight:600;}
-  @media (max-width:1024px){.training-layout{grid-template-columns:1fr;}.care-sketch img{min-height:320px; object-position:center 42%;}}
-  @media (max-width:600px){.grid-cards{grid-template-columns:1fr;}.care-sketch img{min-height:280px;}}
+  @media (max-width:1024px){.training-layout{grid-template-columns:1fr;}}
 
   /* ---------- Care ecosystem mind map ---------- */
   .ecosystem-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:28px; align-items:stretch;}
@@ -261,9 +265,10 @@
   .rx-symbol{font-family:var(--serif); font-size:34px; color:var(--red); font-style:italic; animation:rx-float 3s ease-in-out infinite;}
   @keyframes rx-float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);}}
   .rx-rows{display:grid; gap:14px;}
-  .rx-row{display:flex; gap:14px; font-size:15px; align-items:baseline; transition:all .3s ease;}
+  .rx-row{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:15px; align-items:baseline; transition:all .3s ease;}
   .rx-card:hover .rx-row{padding-left:8px;}
   .rx-row .k{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.6px; color:var(--ink-soft); width:110px; flex-shrink:0;}
+  .rx-row span:not(.k), .rx-row a{min-width:0; flex:1 1 180px; overflow-wrap:break-word; word-break:break-word;}
   .rx-row a{text-decoration:none; font-weight:600; transition:all .3s ease; position:relative;}
   .rx-row a::after{content:""; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:var(--red); transition:width .3s ease;}
   .rx-row a:hover::after{width:100%;}
@@ -327,6 +332,12 @@
     .menu-btn{display:block;}
     .triple{grid-template-columns:1fr;}
     .exp-row{grid-template-columns:1fr; gap:6px;}
+  }
+  @media (max-width: 560px){
+    .rx-card{padding:32px 22px;}
+    .rx-row{gap:4px 0;}
+    .rx-row .k{width:100%;}
+    .rx-row span:not(.k), .rx-row a{flex-basis:100%;}
   }
 </style>
 </head>
