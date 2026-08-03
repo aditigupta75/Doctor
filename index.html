@@ -132,7 +132,7 @@
   .avatar-frame::after{ content:""; position:absolute; inset:0; background:linear-gradient(115deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 30%);
     pointer-events:none; mix-blend-mode:overlay; }
   .avatar-tag{position:absolute; left:14px; bottom:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:7px 12px; border-radius:2px; font-family:var(--mono); font-size:11.5px; color:var(--red-deep); font-weight:600; letter-spacing:0.3px; border:1px solid var(--red-tint); transform:translateZ(50px); z-index:3;}
-  .wave-hand{position:fixed; bottom:2%; right:2%; font-size:48px; transform-origin:70% 70%; animation:wave 2.6s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); z-index:3; opacity:0.95;}
+  .wave-hand{position:absolute; bottom:-4%; right:-6%; font-size:48px; transform-origin:70% 70%; animation:wave 2.6s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); z-index:3; opacity:0.95;}
   @keyframes wave{
     0%,60%,100%{ transform:translateZ(60px) rotate(0deg) scale(1); }
     10%{ transform:translateZ(60px) rotate(12deg) scale(1.05); } 20%{ transform:translateZ(60px) rotate(-8deg) scale(1.05); } 30%{ transform:translateZ(60px) rotate(12deg) scale(1.05); }
@@ -202,7 +202,7 @@
   .card h3{font-size:16.5px; margin:0 0 10px; font-weight:600;}
   .card p{font-size:14px; color:var(--ink-soft); margin:0;}
   .care-sketch{position:relative; overflow:hidden; align-self:start; aspect-ratio:1/1; width:100%; background:#ece0c8; border:1px solid var(--line); isolation:isolate;}
-  .care-sketch img{width:100%; height:100%; display:block; object-fit:cover; object-position:center; mix-blend-mode:multiply; transition:transform .7s cubic-bezier(.2,.7,.2,1);}
+  .care-sketch img{width:100%; height:100%; display:block; object-fit:contain; object-position:center; mix-blend-mode:multiply; transition:transform .7s cubic-bezier(.2,.7,.2,1);}
   .care-sketch:hover img{transform:scale(1.045) rotate(1deg);}
   .care-sketch-label{position:absolute; left:18px; right:18px; bottom:18px; z-index:1; padding:13px 14px; background:rgba(255,255,255,.91); border-left:3px solid var(--red); box-shadow:0 8px 24px rgba(23,24,26,.08);}
   .care-sketch-label span{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--red-deep); margin-bottom:3px;}
