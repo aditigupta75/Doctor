@@ -98,12 +98,12 @@
     .lifescan-wave{display:none;}
   }
   @keyframes wave-heartbeat{
-    0%{ opacity:0.32; }
-    8%{ opacity:0.7; }
-    16%{ opacity:0.4; }
-    24%{ opacity:0.85; }
-    38%{ opacity:0.34; }
-    100%{ opacity:0.32; }
+    0%{ opacity:0.22; }
+    8%{ opacity:0.45; }
+    16%{ opacity:0.26; }
+    24%{ opacity:0.55; }
+    38%{ opacity:0.22; }
+    100%{ opacity:0.22; }
   }
   .lifescan-wave svg{width:220%; height:100%; animation:wave-scroll 9s linear infinite; filter:drop-shadow(0 0 6px rgba(200,30,58,0.35));}
   @keyframes wave-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
@@ -169,6 +169,14 @@
   }
   .pulse-ring{position:absolute; inset:-8px; border-radius:24px; border:1.5px solid var(--red); opacity:0; animation:ring 3.2s ease-out infinite; z-index:2;}
   @keyframes ring{ 0%{ opacity:0.55; transform:scale(0.98);} 100%{ opacity:0; transform:scale(1.08);} }
+
+  .wave-hand{position:absolute; top:6%; right:-2%; font-size:44px; transform-origin:70% 70%; animation:wave 2.6s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); z-index:4;}
+  @keyframes wave{
+    0%,60%,100%{ transform:rotate(0deg) scale(1); }
+    10%{ transform:rotate(14deg) scale(1.05); } 20%{ transform:rotate(-8deg) scale(1.05); } 30%{ transform:rotate(14deg) scale(1.05); }
+    40%{ transform:rotate(-4deg) scale(1); } 50%{ transform:rotate(10deg) scale(1.05); }
+  }
+  @media (max-width:560px){ .wave-hand{font-size:34px; top:2%; right:0;} }
 
   /* orbit icons removed for a cleaner hero */
 
@@ -411,7 +419,7 @@
   </div>
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow hero-in" style="animation-delay:.05s"><span class="rule"></span> MD General Medicine · Indore</div>
+      <div class="eyebrow hero-in" style="animation-delay:.05s"><span class="rule"></span> 🩺 MD General Medicine · Indore</div>
       <h1 class="name hero-in" style="animation-delay:.15s">Dr. Vaibhav<br><em>Gupta</em></h1>
       <p class="lede hero-in" style="animation-delay:.28s">An attending physician trained across internal medicine, critical care and emergency medicine — from ICU procedures and ward rounds to rural health camps and COVID care centres.</p>
       <div class="hero-actions hero-in" style="animation-delay:.4s">
@@ -427,6 +435,7 @@
     </div>
     <div class="avatar-stage">
       <div class="avatar-glow"></div>
+      <div class="wave-hand" aria-hidden="true">👋</div>
       <div class="avatar-card" id="avatarCard">
         <div class="avatar-pedestal"></div>
         <div class="avatar-turntable" id="avatarTurntable">
