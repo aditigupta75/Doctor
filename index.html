@@ -133,7 +133,7 @@
   .vital span{font-size:12.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;}
 
   /* ---------- Avatar / 3D wave card ---------- */
-  .avatar-stage{ perspective:1400px; display:flex; justify-content:center; position:relative; }
+  .avatar-stage{ perspective:1400px; display:flex; justify-content:center; position:relative; z-index:5; isolation:isolate; }
   .avatar-glow{ position:absolute; width:clamp(340px, 34vw, 520px); height:clamp(340px, 34vw, 520px); left:50%; top:50%; transform:translate(-50%,-50%);
     background:radial-gradient(circle, rgba(200,30,58,0.16) 0%, rgba(200,30,58,0) 68%);
     filter:blur(4px); animation:glow-pulse 4.4s ease-in-out infinite; pointer-events:none; z-index:0; }
