@@ -123,6 +123,7 @@
     animation:beam-sweep 6s linear infinite; opacity:0.6; left:-22vw;}
   @keyframes beam-sweep{ 0%{ left:-22vw; } 100%{ left:100%; } }
 
+  /* Removed overflow:hidden from .hero to prevent clipping top badges/hand */
   .hero{padding:96px 0 72px; position:relative;}
   .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; position:relative; z-index:2;}
   .eyebrow{font-family:var(--mono); font-size:12.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--red); display:flex; align-items:center; gap:10px; margin-bottom:22px;}
@@ -166,6 +167,7 @@
   .avatar-pedestal{ position:absolute; left:50%; bottom:-22px; width:78%; height:22px; transform:translateX(-50%);
     background:radial-gradient(ellipse, rgba(23,24,26,0.28) 0%, rgba(23,24,26,0) 72%); z-index:0; }
   
+  /* Fixed Frame & Image Overflow Issues */
   .avatar-frame{ position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--line);
     box-shadow:0 30px 60px -20px rgba(23,24,26,0.35), 0 0 0 8px var(--white), 0 0 0 9px var(--line);
     background:linear-gradient(160deg, var(--paper) 0%, #f3eeea 100%); aspect-ratio: 3 / 4; width:100%; }
@@ -177,71 +179,20 @@
     pointer-events:none; mix-blend-mode:overlay; }
   
   .avatar-tag{position:absolute; left:14px; bottom:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:7px 12px; border-radius:2px; font-family:var(--mono); font-size:11.5px; color:var(--red-deep); font-weight:600; letter-spacing:0.3px; border:1px solid var(--red-tint); transform:translateZ(30px); z-index:3;}
-  
-  /* Fixed Waving hand on the top right corner inside the 3D card */
-  .wave-hand{
-    position:absolute; 
-    top:-24px; 
-    right:-24px; 
-    font-size:42px; 
-    transform-origin:70% 70%; 
-    animation:wave 2.6s ease-in-out 2; 
-    filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); 
-    z-index:10;
-    transform:translateZ(45px); /* Forces it to pop above the 3D frame */
-  }
+  .avatar-badge{position:absolute; right:8px; bottom:8px; width:62px; height:62px; border-radius:50%; transform:translateZ(40px) rotate(-4deg);
+    background:var(--white); border:1.5px solid var(--ink); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 24px -8px rgba(23,24,26,0.4); z-index:10;}
+  .avatar-badge span{font-family:var(--sans); font-size:24px; font-weight:700; color:var(--red); line-height:1;}
+  .pulse-ring{position:absolute; inset:-8px; border-radius:24px; border:1.5px solid var(--red); opacity:0; animation:ring 3.2s ease-out infinite; z-index:2;}
+  @keyframes ring{ 0%{ opacity:0.5; transform:scale(0.98);} 100%{ opacity:0; transform:scale(1.08);} }
+
+  .wave-hand{position:fixed; top:20px; right:20px; font-size:42px; transform-origin:70% 70%; animation:wave 2.6s ease-in-out 2; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); z-index:1000;}
   @keyframes wave{
-    0%,60%,100%{ transform:translateZ(45px) rotate(0deg) scale(1); }
-    10%{ transform:translateZ(45px) rotate(14deg) scale(1.05); } 
-    20%{ transform:translateZ(45px) rotate(-8deg) scale(1.05); } 
-    30%{ transform:translateZ(45px) rotate(14deg) scale(1.05); }
-    40%{ transform:translateZ(45px) rotate(-4deg) scale(1); } 
-    50%{ transform:translateZ(45px) rotate(10deg) scale(1.05); }
+    0%,60%,100%{ transform:rotate(0deg) scale(1); }
+    10%{ transform:rotate(14deg) scale(1.05); } 20%{ transform:rotate(-8deg) scale(1.05); } 30%{ transform:rotate(14deg) scale(1.05); }
+    40%{ transform:rotate(-4deg) scale(1); } 50%{ transform:rotate(10deg) scale(1.05); }
   }
-  @media (max-width:560px){ .wave-hand{font-size:34px; top:-16px; right:-16px;} }
-
-  /* New Badge with Gemini Logo layered underneath "Px" */
-  .avatar-badge{
-    position:absolute; 
-    right:-12px; 
-    bottom:-12px; 
-    width:64px; 
-    height:64px; 
-    border-radius:50%; 
-    transform:translateZ(40px) rotate(-4deg);
-    background:var(--white); 
-    border:1.5px solid var(--ink); 
-    display:flex; 
-    align-items:center; 
-    justify-content:center;
-    box-shadow:0 12px 24px -8px rgba(23,24,26,0.4); 
-    z-index:4;
-    overflow:hidden;
-  }
-  .avatar-badge .gemini-star{
-    position:absolute;
-    width:46px;
-    height:46px;
-    fill:url(#gemini-gradient);
-    opacity:0.25;
-    z-index:1;
-    animation:spin-slow 8s linear infinite;
-  }
-  @keyframes spin-slow { 100% { transform: rotate(360deg); } }
-
-  .avatar-badge span{
-    position:relative; 
-    z-index:2; 
-    font-family:var(--serif); 
-    font-size:26px; 
-    font-style:italic; 
-    font-weight:600; 
-    color:var(--red); 
-    line-height:1;
-  }
-  
-  .pulse-ring{position:absolute; inset:-8px; border-radius:24px; border:1.5px solid var(--red); opacity:0; animation:ring 3.2s ease-out infinite; z-index:2; transform:translateZ(-1px);}
-  @keyframes ring{ 0%{ opacity:0.5; transform:scale(0.98) translateZ(-1px);} 100%{ opacity:0; transform:scale(1.08) translateZ(-1px);} }
+  @media (max-width:560px){ .wave-hand{font-size:34px; top:12px; right:12px;} }
 
   /* ---------- Section shell ---------- */
   section{padding:96px 0;}
@@ -326,551 +277,456 @@
 
   .honors-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:36px;}
   .honor{border:1px solid var(--line); border-left:3px solid var(--red); padding:18px 20px; background:var(--white); transition:all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);}
-  .honor:hover{background:var(--red-tint); transform:translateY(-4px); border-left-color:var(--red-deep);}
-  .honor span{display:block; font-family:var(--mono); font-size:11.5px; color:var(--red-deep); font-weight:600; margin-bottom:4px; letter-spacing:0.3px;}
-  .honor b{display:block; font-size:14.5px; font-weight:600;}
+  .honor:hover{background:var(--red-tint); transform:translateY(-4px); border-left-width:5px; box-shadow:0 8px 20px rgba(200,30,58,0.12);}
+  .honor b{display:block; font-size:14.5px; margin-bottom:4px; transition:color .3s ease;}
+  .honor:hover b{color:var(--red-deep);}
+  .honor span{font-size:13px; color:var(--ink-soft); transition:color .3s ease;}
+  .honor:hover span{color:var(--ink);}
 
-  /* ---------- Contact ---------- */
-  .contact-layout{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
-  .info-group{margin-bottom:34px; padding-left:22px; border-left:1px solid var(--line); position:relative; transition:all .3s ease;}
-  .info-group:hover{border-left-color:var(--red); padding-left:26px;}
-  .info-label{font-family:var(--mono); font-size:12px; color:var(--red-deep); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:6px; display:block;}
-  .info-val{font-size:18px; font-weight:500; font-family:var(--sans);}
-  .info-val a{text-decoration:none;}
-  .info-val a:hover{color:var(--red); text-decoration:underline;}
-  .info-sub{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
+  /* ---------- Skills / languages / interests ---------- */
+  .triple{display:grid; grid-template-columns:1fr 1fr 1fr; gap:40px;}
+  .triple h4{font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--red-deep); margin:0 0 16px; transition:all .3s ease;}
+  .triple>div:hover h4{letter-spacing:1.6px; color:var(--red);}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{font-size:13.5px; padding:7px 13px; border:1px solid var(--line); border-radius:20px; color:var(--ink-soft); transition:all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);}
+  .chip:hover{border-color:var(--red); color:var(--red); background:rgba(200,30,58,0.05); transform:translateY(-2px);}
+  .skill-line{display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:14.5px; transition:all .3s ease;}
+  .skill-line::before{content:"+"; color:var(--red); font-weight:700; font-family:var(--serif); font-size:18px;}
+  .skill-line:hover{padding-left:8px; color:var(--ink);}
 
-  .map-box{background:var(--paper); border:1px solid var(--line); aspect-ratio:4/3; position:relative; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--ink-soft); font-family:var(--mono); font-size:13px; text-align:center;}
-  .map-box svg{width:32px; height:32px; color:var(--red); margin-bottom:12px;}
+  /* ---------- Contact / prescription pad ---------- */
+  .rx-card:hover{box-shadow:0 16px 40px rgba(200,30,58,0.15); transform:translateY(-2px);}
+  .rx-card::before{content:""; position:absolute; top:-1px; left:-1px; right:-1px; height:6px; background:repeating-linear-gradient(90deg, var(--red) 0 10px, transparent 10px 20px);}
+  .rx-head{display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.5px dashed var(--line); padding-bottom:18px; margin-bottom:26px; transition:border-color .3s ease;}
+  .rx-card:hover .rx-head{border-bottom-color:var(--red);}
+  .rx-head .brand{font-size:20px; transition:color .3s ease;}
+  .rx-card:hover .rx-head .brand{color:var(--red);}
+  .rx-symbol{font-family:var(--serif); font-size:34px; color:var(--red); font-style:italic; animation:rx-float 3s ease-in-out infinite;}
+  @keyframes rx-float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);}}
+  .rx-rows{display:grid; gap:14px;}
+  .rx-row{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:15px; align-items:baseline; transition:all .3s ease;}
+  .rx-card:hover .rx-row{padding-left:8px;}
+  .rx-row .k{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.6px; color:var(--ink-soft); width:110px; flex-shrink:0;}
+  .rx-row span:not(.k), .rx-row a{min-width:0; flex:1 1 180px; overflow-wrap:break-word; word-break:break-word;}
+  .rx-row a{text-decoration:none; font-weight:600; transition:all .3s ease; position:relative;}
+  .rx-row a::after{content:""; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:var(--red); transition:width .3s ease;}
+  .rx-row a:hover::after{width:100%;}
+  .rx-row a:hover{color:var(--red);}
+  .rx-foot{margin-top:30px; padding-top:20px; border-top:1.5px dashed var(--line); font-size:13px; color:var(--ink-soft); font-family:var(--mono); transition:all .3s ease;}
+  .rx-card:hover .rx-foot{color:var(--ink-soft); border-top-color:var(--red);}
+
+  footer{padding:36px 0; text-align:center; font-size:13px; color:var(--ink-soft); border-top:1px solid var(--line);}
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform .7s cubic-bezier(0.25, 0.46, 0.45, 0.94);}
+  .reveal.in{opacity:1; transform:translateY(0);}
   
-  footer{padding:48px 32px; text-align:center; border-top:1px solid var(--line); font-family:var(--mono); font-size:13px; color:var(--ink-soft);}
-  .footer-sig{display:flex; align-items:center; justify-content:center; gap:8px;}
+  /* Staggered animations for list items */
+  .timeline .t-item:nth-child(1){transition-delay:.05s;}
+  .timeline .t-item:nth-child(2){transition-delay:.15s;}
+  .timeline .t-item:nth-child(3){transition-delay:.25s;}
+  .timeline .t-item:nth-child(4){transition-delay:.35s;}
+  .timeline .t-item:nth-child(5){transition-delay:.45s;}
   
-  /* ---------- Media queries ---------- */
-  @media (max-width: 900px){
+  .exp-list .exp-row:nth-child(1){transition-delay:.05s;}
+  .exp-list .exp-row:nth-child(2){transition-delay:.15s;}
+  .exp-list .exp-row:nth-child(3){transition-delay:.25s;}
+  .exp-list .exp-row:nth-child(4){transition-delay:.35s;}
+  .exp-list .exp-row:nth-child(5){transition-delay:.45s;}
+  .exp-list .exp-row:nth-child(6){transition-delay:.55s;}
+  .exp-list .exp-row:nth-child(7){transition-delay:.65s;}
+  
+  .grid-cards .card:nth-child(1){transition-delay:.05s;}
+  .grid-cards .card:nth-child(2){transition-delay:.12s;}
+  .grid-cards .card:nth-child(3){transition-delay:.19s;}
+  .grid-cards .card:nth-child(4){transition-delay:.26s;}
+  .grid-cards .card:nth-child(5){transition-delay:.33s;}
+  .grid-cards .card:nth-child(6){transition-delay:.40s;}
+  .grid-cards .card:nth-child(7){transition-delay:.47s;}
+  .grid-cards .card:nth-child(8){transition-delay:.54s;}
+  
+  .pub-list li:nth-child(1){transition-delay:.05s;}
+  .pub-list li:nth-child(2){transition-delay:.15s;}
+  .pub-list li:nth-child(3){transition-delay:.25s;}
+  .pub-list li:nth-child(4){transition-delay:.35s;}
+  .pub-list li:nth-child(5){transition-delay:.45s;}
+  .pub-list li:nth-child(6){transition-delay:.55s;}
+  
+  .honors-grid .honor:nth-child(1){transition-delay:.05s;}
+  .honors-grid .honor:nth-child(2){transition-delay:.15s;}
+  .honors-grid .honor:nth-child(3){transition-delay:.25s;}
+  .honors-grid .honor:nth-child(4){transition-delay:.35s;}
+  .honors-grid .honor:nth-child(5){transition-delay:.45s;}
+  .honors-grid .honor:nth-child(6){transition-delay:.55s;}
+  
+  .triple .reveal:nth-child(1){transition-delay:.1s;}
+  .triple .reveal:nth-child(2){transition-delay:.2s;}
+  .triple .reveal:nth-child(3){transition-delay:.3s;}
+
+  @media (max-width: 860px){
+    .hero{padding:64px 0 48px;}
+    section{padding:64px 0;}
+    .section-head{margin-bottom:36px;}
     .hero-grid{grid-template-columns:1fr;}
-    .hero{padding:54px 0 32px;}
-    .hero-text{order:2; text-align:center;}
-    .eyebrow{justify-content:center;}
-    .lede{margin:0 auto 28px;}
-    .hero-actions{justify-content:center;}
-    .vitals{justify-content:center;}
-    .avatar-stage{order:1; margin-bottom:48px;}
-    .avatar-card{width:min(100%, 320px);}
-    .contact-layout{grid-template-columns:1fr; gap:42px;}
-  }
-  @media (max-width: 768px){
+    .avatar-stage{order:-1; margin-bottom:12px;}
     .navlinks{display:none;}
     .nav-cta{display:none;}
     .menu-btn{display:flex;}
+    .triple{grid-template-columns:1fr; gap:32px;}
+    .exp-row{grid-template-columns:1fr; gap:6px;}
     .grid-cards{grid-template-columns:1fr;}
-    section{padding:72px 0;}
-    .exp-row{grid-template-columns:1fr; gap:8px;}
-    h1.name{font-size:42px;}
+  }
+  @media (max-width: 420px){
+    .hero-actions{flex-direction:column; align-items:stretch;}
+    .btn{width:100%; justify-content:center;}
+  }
+  @media (max-width: 560px){
+    .rx-card{padding:32px 22px 32px 22px;}
+    .rx-row{gap:4px 0;}
+    .rx-row .k{width:100%;}
+    .rx-row span:not(.k), .rx-row a{flex-basis:100%;}
+    .scroll-to-top{width:44px; height:44px; right:14px; bottom:14px; font-size:16px;}
   }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="pageLoader" aria-hidden="true"></div>
+<div class="wave-hand" aria-hidden="true">👋</div>
 
-<a href="#main" class="skip-link">Skip to content</a>
-
-<div id="pageLoader"></div>
-
-<!-- EKG Top Line -->
 <div class="ekg-rail" aria-hidden="true">
   <svg viewBox="0 0 1000 26" preserveAspectRatio="none">
-    <path id="ekg-path" d="M0,13 L150,13 L160,5 L170,22 L185,13 L280,13 L290,9 L300,16 L310,13 L450,13 L458,2 L470,24 L485,13 L560,13 L570,8 L580,18 L590,13 L700,13 L710,5 L725,22 L740,13 L860,13 L870,2 L885,24 L900,13 L1000,13" />
-    <circle id="ekg-dot" cx="0" cy="0" r="3.5">
-      <animateMotion dur="3.6s" repeatCount="1" path="M0,13 L150,13 L160,5 L170,22 L185,13 L280,13 L290,9 L300,16 L310,13 L450,13 L458,2 L470,24 L485,13 L560,13 L570,8 L580,18 L590,13 L700,13 L710,5 L725,22 L740,13 L860,13 L870,2 L885,24 L900,13 L1000,13" fill="freeze" calcMode="linear"/>
-    </circle>
+    <path id="ekg-path" d="M0,13 L120,13 L145,13 L160,2 L178,24 L196,6 L214,13 L340,13 L365,13 L380,4 L398,22 L416,8 L434,13 L560,13 L585,13 L600,2 L618,24 L636,6 L654,13 L780,13 L805,13 L820,4 L838,22 L856,8 L874,13 L1000,13"/>
+    <circle id="ekg-dot" r="4" cy="13"><animateMotion dur="3.6s" repeatCount="indefinite" path="M0,0 L120,0 L145,0 L160,-11 L178,11 L196,-7 L214,0 L340,0 L365,0 L380,-9 L398,9 L416,-5 L434,0 L560,0 L585,0 L600,-11 L618,11 L636,-7 L654,0 L780,0 L805,0 L820,-9 L838,9 L856,-5 L874,0 L1000,0"/></circle>
   </svg>
 </div>
 
-<nav>
+<nav aria-label="Primary">
   <div class="navbar">
-    <a href="/" class="brand">Dr. Vaibhav<span class="dot">.</span></a>
-    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-    </button>
-    <ul class="navlinks" role="list">
+    <div class="brand">Dr. Vaibhav Gupta<span class="dot">.</span></div>
+    <ul class="navlinks">
+      <li><a href="#about">Journey</a></li>
       <li><a href="#experience">Experience</a></li>
-      <li><a href="#training">Training</a></li>
+      <li><a href="#training">Clinical Training</a></li>
       <li><a href="#research">Research</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">Consult</a>
+    <a class="nav-cta" href="#contact">Book a consult</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
   </div>
-  <ul class="navlinks-mobile" id="mobileNav" role="list">
+  <ul class="navlinks-mobile" id="mobileMenu">
+    <li><a href="#about">Journey</a></li>
     <li><a href="#experience">Experience</a></li>
-    <li><a href="#training">Training</a></li>
+    <li><a href="#training">Clinical Training</a></li>
     <li><a href="#research">Research</a></li>
-    <li><a href="#contact">Consult</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
 <main id="main">
-  <!-- HERO -->
-  <section class="hero wrap">
-    <div class="lifescan">
-      <div class="lifescan-grid"></div>
-      <div class="lifescan-beam"></div>
-    </div>
-    
-    <div class="hero-grid hero-in">
-      <div class="hero-text">
-        <div class="eyebrow"><div class="rule"></div> MD General Medicine</div>
-        <h1 class="name">Dr. Vaibhav <em>Gupta</em></h1>
-        <p class="lede">
-          Attending physician trained across internal medicine, critical care and emergency medicine — from ICU procedures and ward rounds to rural health camps and COVID care centres.
-        </p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">Schedule Consultation</a>
-          <a href="#training" class="btn btn-ghost">View Expertise</a>
-        </div>
-        <div class="vitals">
-          <div class="vital"><b>8+</b> <span>Years Training</span></div>
-          <div class="vital"><b>MYH</b> <span>Core Residency</span></div>
-          <div class="vital"><b>IND</b> <span>Madhya Pradesh</span></div>
-        </div>
+<header class="hero">
+  <div class="lifescan">
+    <div class="lifescan-grid"></div>
+    <div class="lifescan-beam"></div>
+  </div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow hero-in" style="animation-delay:.05s"><span class="rule"></span> <span aria-hidden="true">🩺</span> MD General Medicine · Indore</div>
+      <h1 class="name hero-in" style="animation-delay:.15s">Dr. Vaibhav<br><em>Gupta</em></h1>
+      <p class="lede hero-in" style="animation-delay:.28s">An attending physician trained across internal medicine, critical care and emergency medicine — from ICU procedures and ward rounds to rural health camps and COVID care centres.</p>
+      <div class="hero-actions hero-in" style="animation-delay:.4s">
+        <a class="btn btn-primary" href="#contact">Get in touch</a>
+        <a class="btn btn-ghost" href="#experience">View credentials</a>
       </div>
-      
-      <div class="avatar-stage">
-        <div class="avatar-glow"></div>
-        
-        <div class="avatar-card" id="avatarCard">
-          <div class="avatar-pedestal"></div>
-          
-          <div class="avatar-turntable" id="avatarTurntable">
-            <div class="pulse-ring"></div>
-            <!-- Waving hand pinned and inside the 3D rotation context -->
-            <div class="wave-hand" aria-hidden="true">👋</div>
-            
-            <div class="avatar-frame">
-              <!-- Inline placeholder SVG if 'avatar.jpg' is missing -->
-              <img src="avatar.jpg" alt="Portrait of Dr. Vaibhav Gupta" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 380 500\' fill=\'%23f3eeea\'%3E%3Crect width=\'380\' height=\'500\'/%3E%3Ccircle cx=\'190\' cy=\'200\' r=\'70\' fill=\'%23d8c8bd\'/%3E%3Cpath d=\'M90,500 Q90,360 190,360 Q290,360 290,500\' fill=\'%23d8c8bd\'/%3E%3C/svg%3E';" width="380" height="500">
-              <div class="avatar-tag">INDORE, MP</div>
-            </div>
-            
-            <div class="avatar-badge" title="Dr. Vaibhav Gupta">
-              <svg class="gemini-star" viewBox="0 0 24 24" aria-hidden="true">
-                <defs>
-                  <linearGradient id="gemini-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="var(--red)" />
-                    <stop offset="100%" stop-color="var(--ink)" />
-                  </linearGradient>
-                </defs>
-                <!-- Google Gemini Star Path -->
-                <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z" />
-              </svg>
-              <span>Px</span>
-            </div>
+      <div class="vitals hero-in" style="animation-delay:.52s">
+        <div class="vital"><b>5+ yrs</b><span>Clinical Practice</span></div>
+        <div class="vital"><b>4</b><span>Conference Posters</span></div>
+        <div class="vital"><b>2</b><span>Published Papers</span></div>
+        <div class="vital"><b>4</b><span>Languages Spoken</span></div>
+      </div>
+    </div>
+    <div class="avatar-stage">
+      <div class="avatar-glow"></div>
+      <div class="avatar-card" id="avatarCard">
+        <div class="avatar-pedestal"></div>
+        <div class="avatar-turntable" id="avatarTurntable">
+          <div class="pulse-ring"></div>
+          <div class="avatar-frame">
+            <img src="avatar.jpg" width="860" height="1146" alt="3D illustrated avatar of Dr. Vaibhav Gupta in a navy suit with a stethoscope" loading="eager" fetchpriority="high" decoding="async">
+            <div class="avatar-tag">MGMC &amp; MYH · Indore</div>
           </div>
-          
+          <div class="avatar-badge" title="Dr. Vaibhav Gupta - Px Logo">
+            <span>Px</span>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</header>
 
-  <!-- EDUCATION & EXPERIENCE -->
-  <section id="experience" class="band">
-    <div class="wrap">
-      <div class="section-head obv-animate">
-        <span class="kicker">Pathway</span>
-        <h2>Clinical Journey</h2>
-        <p class="section-sub">Rigorous training across tertiary care hospitals and community health centres.</p>
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Education</span>
+      <h2>The academic journey</h2>
+      <p class="section-sub">From board topper to postgraduate residency — a decade-long path through two of India's teaching hospitals.</p>
+    </div>
+    <div class="timeline">
+      <div class="t-item reveal">
+        <span class="t-year">2025</span>
+        <p class="t-title">MD, General Medicine</p>
+        <p class="t-org">Mahatma Gandhi Medical College &amp; Hospital, Indore, M.P.</p>
       </div>
-      
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:64px;">
-        
-        <div>
-          <h3 style="font-family:var(--serif); margin-top:0; margin-bottom:32px;">Medical Education</h3>
-          <div class="timeline obv-animate">
-            <div class="t-item">
-              <span class="t-year">2022 — Present</span>
-              <h4 class="t-title">MD General Medicine (Residency)</h4>
-              <p class="t-org">Mahatma Gandhi Memorial Medical College (MGMMC) & Maharaja Yeshwantrao Hospital (MYH), Indore</p>
-            </div>
-            <div class="t-item">
-              <span class="t-year">2021 — 2022</span>
-              <h4 class="t-title">Rotatory Internship</h4>
-              <p class="t-org">NSCB Medical College, Jabalpur (Rural & Urban Postings)</p>
-            </div>
-            <div class="t-item">
-              <span class="t-year">2016 — 2021</span>
-              <h4 class="t-title">M.B.B.S.</h4>
-              <p class="t-org">Netaji Subhash Chandra Bose Medical College, Jabalpur</p>
-            </div>
-            <div class="t-item">
-              <span class="t-year">2015</span>
-              <h4 class="t-title">AISSCE (Class 12th)</h4>
-              <p class="t-org">Christ Church Boys' Senior Secondary School, Jabalpur</p>
-            </div>
-          </div>
-        </div>
-        
-        <div>
-          <h3 style="font-family:var(--serif); margin-top:0; margin-bottom:32px;">Clinical Roles</h3>
-          <div class="exp-list obv-animate">
-            <div class="exp-row">
-              <div class="exp-place">MYH Indore<br>1200+ Bed Facility</div>
-              <div>
-                <h4 class="exp-role">Junior Resident (Medicine)</h4>
-                <p class="exp-desc">Managing acute emergencies, OPD triage, and intensive care protocols (MICU/ICCU). Routine ward rounds and cross-departmental referrals.</p>
-              </div>
-            </div>
-            <div class="exp-row">
-              <div class="exp-place">M.P. Govt.<br>Health Mission</div>
-              <div>
-                <h4 class="exp-role">Medical Officer</h4>
-                <p class="exp-desc">Primary care physician addressing infectious diseases, NCD screening, and maternity referrals in resource-limited rural settings.</p>
-              </div>
-            </div>
-            <div class="exp-row">
-              <div class="exp-place">COVID Care<br>NSCB Jabalpur</div>
-              <div>
-                <h4 class="exp-role">Intern Physician (Pandemic)</h4>
-                <p class="exp-desc">Frontline management of severe acute respiratory infections. Administered oxygen therapies, monitored vitals, and facilitated patient isolation protocols.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+      <div class="t-item reveal">
+        <span class="t-year">2021</span>
+        <p class="t-title">Rotating Internship</p>
+        <p class="t-org">B.J. Government Medical College &amp; Sassoon General Hospital, Pune</p>
+      </div>
+      <div class="t-item reveal">
+        <span class="t-year">2020</span>
+        <p class="t-title">MBBS</p>
+        <p class="t-org">B.J. Government Medical College &amp; Sassoon General Hospital, Pune</p>
+      </div>
+      <div class="t-item reveal">
+        <span class="t-year">2015</span>
+        <p class="t-title">HSC — 95.7%</p>
+        <p class="t-org">DAV Public School, Bilaspur, Chhattisgarh (CBSE)</p>
+      </div>
+      <div class="t-item reveal">
+        <span class="t-year">2013</span>
+        <p class="t-title">SSC — 95%</p>
+        <p class="t-org">St. Francis Senior Secondary School, Bilaspur, Chhattisgarh (CBSE)</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ROTATIONS & SKILLS -->
-  <section id="training" class="wrap">
-    <div class="section-head obv-animate">
-      <span class="kicker">Core Competencies</span>
-      <h2>Specialty Rotations</h2>
-      <p class="section-sub">Comprehensive clinical exposure spanning critical systems and emergency interventions.</p>
+<section id="experience" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Work Experience</span>
+      <h2>Where the training happened</h2>
+      <p class="section-sub">Residency wards, rural PHCs and pandemic-era care centres — hands-on medicine in every setting.</p>
     </div>
-    
-    <div class="training-layout obv-animate">
+    <div class="exp-list">
+      <div class="exp-row reveal">
+        <div class="exp-place">MGMMC &amp; MYH, Indore</div>
+        <div><p class="exp-role">MD Medicine Residency</p><p class="exp-desc">Completed postgraduate residency in General Medicine — OPD/IPD care, ICU rotations and academic training.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">Sassoon General Hospital, Pune</div>
+        <div><p class="exp-role">Junior Resident (Medical Officer) — Paediatric Surgery</p><p class="exp-desc">Managed critical neonatal, infant and paediatric surgical cases; assisted in the operation theatre, including pigtail line insertions.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">PHC Khadakwasla, Pune</div>
+        <div><p class="exp-role">Medical Officer</p><p class="exp-desc">OPD and IPD care, deliveries, school health camps and eye checkups.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">PHC Shirur, Pune</div>
+        <div><p class="exp-role">Medical Officer — COVID &amp; Non-COVID</p><p class="exp-desc">Patient management across COVID OPDs, alongside general patient counselling.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">P.M.C. Baner COVID Care Centre</div>
+        <div><p class="exp-role">Medical Officer</p><p class="exp-desc">Contact tracing, patient management and preventive care coordination.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">Sassoon General Hospital, Pune</div>
+        <div><p class="exp-role">Rotating Internship</p><p class="exp-desc">Foundational clinical internship across major departments.</p></div>
+      </div>
+      <div class="exp-row reveal">
+        <div class="exp-place">Switch India</div>
+        <div><p class="exp-role">Active NGO Member</p><p class="exp-desc">Visited the National Burns Centre and National Ambulance Centre; helped organise numerous community health camps.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="care-map">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Care Ecosystem</span>
+      <h2>Medicine, mapped around people</h2>
+      <p class="section-sub">A visual snapshot of the clinical settings and strengths that shape a patient-first approach.</p>
+    </div>
+    <div class="ecosystem-grid">
+      <div class="mindmap reveal" aria-label="Mind map of Dr. Vaibhav Gupta's clinical care focus">
+        <div class="map-core"><small>the centre</small><b>Patient<br>care</b></div>
+        <div class="map-node map-one"><span>01 / Assess</span><b>Diagnosis</b><p>Thoughtful clinical evaluation and clear medical communication.</p></div>
+        <div class="map-node map-two"><span>02 / Act</span><b>Critical care</b><p>Hands-on experience across ICUs, emergencies and acute medicine.</p></div>
+        <div class="map-node map-three"><span>03 / Prevent</span><b>Preventive care</b><p>Vaccination, counselling and early intervention in everyday practice.</p></div>
+        <div class="map-node map-four"><span>04 / Connect</span><b>Community health</b><p>Care across rural PHCs, health camps and public health settings.</p></div>
+      </div>
+      <aside class="care-flow reveal">
+        <span class="kicker">The approach</span>
+        <h3 class="flow-title">A clear path through care.</h3>
+        <div class="flow-step"><span class="flow-step-num">01</span><div><b>Listen closely</b><p>Start with the person, their concerns and the full clinical picture.</p></div></div>
+        <div class="flow-step"><span class="flow-step-num">02</span><div><b>Assess precisely</b><p>Bring together examination, investigations and clinical judgement.</p></div></div>
+        <div class="flow-step"><span class="flow-step-num">03</span><div><b>Guide with clarity</b><p>Turn decisions into practical next steps patients can understand.</p></div></div>
+        <div class="flow-note">Compassion + clinical rigour</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="training">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Clinical Training</span>
+      <h2>Rotations &amp; procedures</h2>
+      <p class="section-sub">Hands-on exposure across medicine, surgery, emergency and critical care.</p>
+    </div>
+    <div class="training-layout">
       <div class="grid-cards">
-        <div class="card">
-          <div class="card-icon">M</div>
-          <h3>Internal Medicine</h3>
-          <p>Extensive OPD and ward management of complex multi-systemic conditions.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">C</div>
-          <h3>Cardiology & ICCU</h3>
-          <p>Acute myocardial infarction protocols, heart failure management and rhythm stabilisation.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">P</div>
-          <h3>Pulmonology</h3>
-          <p>Management of ARDS, COPD exacerbations, tuberculosis, and ventilator mechanics.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">S</div>
-          <h3>Surgery & Emergency</h3>
-          <p>Trauma triage, basic surgical suturing, and immediate resuscitation (BLS/ACLS protocols).</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">O</div>
-          <h3>Obstetrics & Gynaecology</h3>
-          <p>Antenatal care, assisting normal deliveries, and initial management of obstetric emergencies.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">G</div>
-          <h3>Gastroenterology</h3>
-          <p>Management of acute liver failure, GI bleeds, and severe infectious gastroenteritis.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">E</div>
-          <h3>Endocrinology</h3>
-          <p>Diabetic ketoacidosis (DKA) management and chronic endocrine pathway optimisation.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">Px</div>
-          <h3>Paediatrics</h3>
-          <p>Neonatal resuscitation, acute paediatric infections, and vaccination protocols.</p>
-        </div>
+        <div class="card reveal"><div class="card-icon">M</div><h3>Internal Medicine</h3><p>Independent OPD/IPD management; lumbar puncture, ascitic tap, central &amp; dialysis line insertion, pleural tap, pericardiocentesis; ECG, ABG, X-ray, CT/MRI interpretation; 2D echocardiography.</p></div>
+        <div class="card reveal"><div class="card-icon">C</div><h3>COVID Care</h3><p>Managed COVID wards and ICUs at a tertiary care hospital and a dedicated COVID care centre.</p></div>
+        <div class="card reveal"><div class="card-icon">P</div><h3>Paediatric Surgery</h3><p>Critical and emergency care for newborns, infants and children; OT assistance including pigtail line insertion.</p></div>
+        <div class="card reveal"><div class="card-icon">S</div><h3>Surgery</h3><p>Dressings, debridement, suturing and burn management.</p></div>
+        <div class="card reveal"><div class="card-icon">O</div><h3>Orthopaedics</h3><p>Assisted in surgical procedures across trauma and orthopaedic cases.</p></div>
+        <div class="card reveal"><div class="card-icon">G</div><h3>Obstetrics &amp; Gynaecology</h3><p>ANC/PNC care, labour room duties, conducted deliveries and episiotomies, assisted OT for LSCS.</p></div>
+        <div class="card reveal"><div class="card-icon">E</div><h3>Emergency Medicine</h3><p>Attended cardiac arrest, shock, stroke and coma cases; medicine ICU duties.</p></div>
+        <div class="card reveal"><div class="card-icon">Px</div><h3>Paediatrics</h3><p>Vaccination programmes and management of paediatric dog-bite cases.</p></div>
       </div>
-      
-      <div class="care-sketch">
-        <!-- SVG diagram representation for the right side -->
-        <svg viewBox="0 0 600 257" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:0.8;">
-          <path d="M50 128 L150 128 L170 80 L200 180 L230 128 L380 128 L400 90 L430 160 L450 128 L550 128" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="50" cy="128" r="4" fill="var(--red)"/>
-          <circle cx="550" cy="128" r="4" fill="var(--red)"/>
-          <path d="M185 100 Q 200 60 215 100" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="2 4"/>
-          <text x="70" y="110" font-family="var(--mono)" font-size="10" fill="var(--ink-soft)">VITAL TRACKING</text>
-          <text x="400" y="200" font-family="var(--mono)" font-size="10" fill="var(--ink-soft)">RHYTHM STABILISATION</text>
-        </svg>
-        <div class="care-sketch-label">
-          <span>ICU & Emergency</span>
-          <b>Procedural Proficiency</b>
-          <p style="font-size:13px; color:var(--ink-soft); margin:4px 0 0; line-height:1.4;">Intubation, central line placement, lumbar puncture, pleural & ascitic tapping, and point-of-care ultrasound.</p>
-        </div>
+      <aside class="care-sketch reveal" aria-label="Illustration of everyday medical tools">
+        <img src="medical-desk-sketch.png" alt="Hand-drawn doctor desk with a stethoscope, clipboard, prescription pad, ECG strip and clinical tools">
+        <div class="care-sketch-label"><span>Everyday care</span><b>Prepared. Present. Precise.</b></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="research" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Research &amp; Recognition</span>
+      <h2>Publications &amp; presentations</h2>
+      <p class="section-sub">Peer-reviewed work and conference posters across nephrology, rheumatology and haematology.</p>
+    </div>
+    <ol class="pub-list">
+      <li class="reveal"><span class="pub-num">01</span><div><p class="pub-title">Tuberculosis Infection in Chronic Kidney Disease Patients in a Tertiary Care Centre</p><span class="pub-meta">Indian Journal of Nephrology · IJN_388_2025</span></div></li>
+      <li class="reveal"><span class="pub-num">02</span><div><p class="pub-title">Impact of Treatment on Clinicopsychological Status of Rheumatoid Arthritis Patients — A Prospective Observational Study from a Tertiary Care Centre in Central India</p><span class="pub-meta">JAPI · ID JAPI_25_1379_R2</span></div></li>
+      <li class="reveal"><span class="pub-num">03</span><div><p class="pub-title">Therapeutic Efficacy of Automated Red Cell Exchange in Sickle Cell Patients</p><span class="pub-meta">Central India Hematology Summit IV, Indore · Aug 2024 — 1st position, Poster</span></div></li>
+      <li class="reveal"><span class="pub-num">04</span><div><p class="pub-title">Choroid Plexus Haemorrhage as Initial Presentation in SLE</p><span class="pub-meta">World Rheumatology Forum, Chennai · Mar 2024</span></div></li>
+      <li class="reveal"><span class="pub-num">05</span><div><p class="pub-title">Neuroleptospirosis — An Atypical Primary Presentation of the Spirochete</p><span class="pub-meta">Medifest 2024, AIIMS Bhopal · Mar 2024</span></div></li>
+      <li class="reveal"><span class="pub-num">06</span><div><p class="pub-title">A Rare Case of Multiple Autoimmune Syndrome</p><span class="pub-meta">MESCON 2024 · Feb 2024</span></div></li>
+    </ol>
+
+    <div class="honors-grid">
+      <div class="honor reveal"><b>1st Prize</b><span>Central India Hematology Summit — Poster Presentation</span></div>
+      <div class="honor reveal"><b>1st Prize</b><span>General Medicine Quiz, MGMMC &amp; MYH, Indore</span></div>
+      <div class="honor reveal"><b>2nd Prize</b><span>AIIMS Bhopal Medifest — Poster Presentation</span></div>
+      <div class="honor reveal"><b>Certificate</b><span>Comprehensive Upper GI Endoscopy Training, IRCAD, Indore — Dec 2024</span></div>
+      <div class="honor reveal"><b>Certificate</b><span>PACTEM 2025 — POCUS for Acute Care in Trauma &amp; Emergency, AIIMS Bhopal</span></div>
+      <div class="honor reveal"><b>ALS-BLS Certified</b><span>IAP 2019, Sassoon General Hospital, Pune &amp; MYH, Indore 2025</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap triple">
+    <div class="reveal">
+      <h4>Key Skills</h4>
+      <div class="skill-line">Good diagnostic approach</div>
+      <div class="skill-line">Clear patient communication</div>
+      <div class="skill-line">Attention to detail &amp; time management</div>
+      <div class="skill-line">Preventive care</div>
+      <div class="skill-line">Teamwork &amp; leadership</div>
+    </div>
+    <div class="reveal">
+      <h4>Languages</h4>
+      <div class="chips">
+        <span class="chip">Hindi</span><span class="chip">English</span><span class="chip">Marathi</span><span class="chip">Chhattisgarhi</span>
       </div>
     </div>
-  </section>
-
-  <!-- CARE ECOSYSTEM -->
-  <section class="band">
-    <div class="wrap">
-      <div class="section-head obv-animate">
-        <span class="kicker">Clinical Philosophy</span>
-        <h2>Holistic Care Ecosystem</h2>
-        <p class="section-sub">A comprehensive approach to diagnostics, acute intervention, and longitudinal patient health.</p>
-      </div>
-
-      <div class="ecosystem-grid obv-animate">
-        <div class="mindmap">
-          <div class="map-node map-one">
-            <span>01</span>
-            <b>Diagnostics</b>
-            <p>Evidence-based evaluation integrating clinical history with advanced lab and imaging modalities.</p>
-          </div>
-          <div class="map-node map-two">
-            <span>02</span>
-            <b>Acute Care</b>
-            <p>Rapid triage and intervention in critical conditions, stabilising vitals and preventing deterioration.</p>
-          </div>
-          
-          <div class="map-core">
-            <small>Core</small>
-            <b>Patient<br>First</b>
-          </div>
-
-          <div class="map-node map-three">
-            <span>03</span>
-            <b>Management</b>
-            <p>Formulating targeted pharmacological and conservative therapeutic regimens.</p>
-          </div>
-          <div class="map-node map-four">
-            <span>04</span>
-            <b>Prevention</b>
-            <p>Patient education, lifestyle modification, and routine screening to avert disease progression.</p>
-          </div>
-        </div>
-
-        <div class="care-flow">
-          <h3 class="flow-title">Consultation Pathway</h3>
-          <div class="flow-step">
-            <div class="flow-step-num">I</div>
-            <div>
-              <b>Initial Assessment</b>
-              <p>Detailed history taking, systematic physical examination, and review of past medical records.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-step-num">II</div>
-            <div>
-              <b>Diagnostic Plan</b>
-              <p>Prescribing specific blood panels, imaging, or functional tests to confirm clinical differentials.</p>
-            </div>
-          </div>
-          <div class="flow-step" style="padding-bottom:0;">
-            <div class="flow-step-num">III</div>
-            <div>
-              <b>Therapeutic Action</b>
-              <p>Initiating evidence-based treatments and scheduling necessary follow-up intervals for monitoring.</p>
-            </div>
-          </div>
-          <div class="flow-note">
-            Referrals to superspecialists facilitated when condition demands surgical or hyper-niche intervention.
-          </div>
-        </div>
+    <div class="reveal">
+      <h4>Beyond the Clinic</h4>
+      <div class="chips">
+        <span class="chip">Guitar</span><span class="chip">Swimming</span><span class="chip">Badminton</span><span class="chip">Exercise</span><span class="chip">Trekking</span>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- RESEARCH & ACADEMICS -->
-  <section id="research" class="wrap">
-    <div class="section-head obv-animate">
-      <span class="kicker">Academics</span>
-      <h2>Research & Presentations</h2>
-      <p class="section-sub">Contributions to internal medicine literature and ongoing medical education.</p>
+<section id="contact" class="band">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-left:auto; margin-right:auto; text-align:center;">
+      <span class="kicker">Get in Touch</span>
+      <h2>Let's connect</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto;">For referrals, consultations, or academic correspondence.</p>
     </div>
-    
-    <ul class="pub-list obv-animate" role="list">
-      <li>
-        <div class="pub-num">01.</div>
-        <div>
-          <h4 class="pub-title">Clinical Profile and Outcomes of Multi-Drug Resistant Tuberculosis in Central India</h4>
-          <div class="pub-meta">State Medical Journal (Under Review) • 2023</div>
-        </div>
-      </li>
-      <li>
-        <div class="pub-num">02.</div>
-        <div>
-          <h4 class="pub-title">Atypical Presentations of Dengue Fever: A Case Series during the 2022 Outbreak</h4>
-          <div class="pub-meta">Poster Presentation • MP API Conference • 2022</div>
-        </div>
-      </li>
-      <li>
-        <div class="pub-num">03.</div>
-        <div>
-          <h4 class="pub-title">Efficacy of Early Non-Invasive Ventilation in Acute Exacerbation of COPD</h4>
-          <div class="pub-meta">Departmental Audit • MY Hospital • 2022</div>
-        </div>
-      </li>
-    </ul>
-
-    <div class="honors-grid obv-animate">
-      <div class="honor">
-        <span>WORKSHOP</span>
-        <b>Advanced Cardiac Life Support (ACLS) Certified</b>
+    <div class="rx-card reveal">
+      <div class="rx-head">
+        <div class="brand">Dr. Vaibhav Gupta</div>
+        <div class="rx-symbol">℞</div>
       </div>
-      <div class="honor">
-        <span>SEMINAR</span>
-        <b>Recent Advances in Rheumatology (2023)</b>
+      <div class="rx-rows">
+        <div class="rx-row"><span class="k">Designation</span><span>MD Medicine, Department of Medicine</span></div>
+        <div class="rx-row"><span class="k">Institute</span><span>MGMC &amp; MYH, Indore</span></div>
+        <div class="rx-row"><span class="k">Email</span><a href="mailto:vaibhav221097@gmail.com">vaibhav221097@gmail.com</a></div>
+        <div class="rx-row"><span class="k">Phone</span><a href="tel:+919630636306">+91 96306 36306</a></div>
+        <div class="rx-row"><span class="k">Address</span><span>Jaora Compound, near MY Hospital, Indore 452001</span></div>
       </div>
-      <div class="honor">
-        <span>CME</span>
-        <b>Endocrine Updates: Thyroid & Diabetes (2022)</b>
-      </div>
+      <div class="rx-foot">RX No. — GENERAL MEDICINE / INDORE · Available for referrals &amp; second opinions</div>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="band">
-    <div class="wrap">
-      <div class="section-head obv-animate">
-        <span class="kicker">Connect</span>
-        <h2>Consultations & Enquiries</h2>
-        <p class="section-sub">Available for clinical evaluations, second opinions, and medical discussions.</p>
-      </div>
-      
-      <div class="contact-layout obv-animate">
-        <div>
-          <div class="info-group">
-            <span class="info-label">Direct Communication</span>
-            <div class="info-val"><a href="mailto:vaibhav221097@gmail.com">vaibhav221097@gmail.com</a></div>
-            <div class="info-sub">Primary channel for clinical documents and general enquiries.</div>
-          </div>
-          <div class="info-group">
-            <span class="info-label">Mobile / Appointments</span>
-            <div class="info-val"><a href="tel:+919630636306">+91 96306 36306</a></div>
-            <div class="info-sub">For scheduling and urgent medical communication.</div>
-          </div>
-          <div class="info-group">
-            <span class="info-label">Primary Location</span>
-            <div class="info-val">MY Hospital, Indore</div>
-            <div class="info-sub">Department of General Medicine.<br>Jaora Compound, Indore, MP 452001</div>
-          </div>
-        </div>
-        
-        <div class="map-box">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
-          <div>
-            <b>Indore, Madhya Pradesh</b><br>
-            Central India Healthcare Hub
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 </main>
 
 <footer>
-  <div class="wrap">
-    <div class="footer-sig">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-      Dr. Vaibhav Gupta &copy; <span id="yr"></span>.
-    </div>
-  </div>
+  <div class="wrap">© 2026 Dr. Vaibhav Gupta · MD General Medicine · Indore, India</div>
 </footer>
 
-<button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top" title="Scroll to top">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
-</button>
+<button class="scroll-to-top" id="scrollToTop" title="Scroll to top" aria-label="Scroll to top">↑</button>
 
 <script>
-  // Dynamic Year
-  document.getElementById('yr').textContent = new Date().getFullYear();
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
 
-  // Mobile Nav Toggle
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  menuBtn.addEventListener('click', () => {
-    const isOpen = mobileNav.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', isOpen);
-  });
-  
-  // Close mobile nav on click
-  mobileNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileNav.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // Scroll to top functionality
-  const scrollTopBtn = document.getElementById('scrollTopBtn');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 500) {
-      scrollTopBtn.classList.add('show');
-    } else {
-      scrollTopBtn.classList.remove('show');
-    }
-  }, { passive: true });
-
-  scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // 3D Mouse Parallax (Avatar Card)
+  // 3D tilt on avatar card (pointer devices only)
+  const turntable = document.getElementById('avatarTurntable');
   const stage = document.querySelector('.avatar-stage');
-  const card = document.getElementById('avatarCard');
-  let bounds;
-
-  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    stage.addEventListener('mouseenter', () => {
-      bounds = stage.getBoundingClientRect();
-      card.style.transition = 'none';
-      card.style.animation = 'none';
+  if (window.matchMedia('(hover: hover)').matches){
+    stage.addEventListener('mousemove', (e)=>{
+      const rect = stage.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      turntable.style.animationPlayState = 'paused';
+      turntable.style.transform = `rotateY(${x*26}deg) rotateX(${-y*20 + 4}deg)`;
     });
-    
-    stage.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      const leftX = mouseX - bounds.x;
-      const topY = mouseY - bounds.y;
-      const center = { x: leftX - bounds.width / 2, y: topY - bounds.height / 2 };
-      const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
-      
-      const maxTilt = 18;
-      const tiltX = (center.y / (bounds.height / 2)) * -maxTilt;
-      const tiltY = (center.x / (bounds.width / 2)) * maxTilt;
-      
-      card.style.transform = `perspective(1400px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-8px)`;
-    });
-    
-    stage.addEventListener('mouseleave', () => {
-      card.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      card.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg) translateY(0)';
-      
-      // restart float animation after transition
-      setTimeout(() => {
-        card.style.transition = '';
-        card.style.animation = 'float 5s ease-in-out infinite';
-      }, 600);
+    stage.addEventListener('mouseleave', ()=>{
+      turntable.style.transform = '';
+      turntable.style.animationPlayState = 'running';
     });
   }
 
-  // Intersection Observer for scroll animations
-  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        obs.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('.obv-animate').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    observer.observe(el);
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function setMenu(open){
+    mobileMenu.classList.toggle('open', open);
+    menuBtn.textContent = open ? '✕' : '☰';
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  menuBtn.addEventListener('click', ()=> setMenu(!mobileMenu.classList.contains('open')));
+  mobileMenu.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=> setMenu(false));
+  });
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) setMenu(false);
+  });
+  
+  // Scroll to top button
+  const scrollBtn = document.getElementById('scrollToTop');
+  window.addEventListener('scroll', ()=>{
+    scrollBtn.classList.toggle('show', window.scrollY > 300);
+  });
+  scrollBtn.addEventListener('click', ()=>{
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 </body>
