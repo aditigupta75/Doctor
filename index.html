@@ -123,7 +123,6 @@
     animation:beam-sweep 6s linear infinite; opacity:0.6; left:-22vw;}
   @keyframes beam-sweep{ 0%{ left:-22vw; } 100%{ left:100%; } }
 
-  /* Removed overflow:hidden from .hero to prevent clipping top badges/hand */
   .hero{padding:96px 0 72px; position:relative;}
   .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; position:relative; z-index:2;}
   .eyebrow{font-family:var(--mono); font-size:12.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--red); display:flex; align-items:center; gap:10px; margin-bottom:22px;}
@@ -160,7 +159,7 @@
     animation:float 5s ease-in-out infinite;
   }
   @keyframes float{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-12px);} }
-  .avatar-turntable{ transform-style:preserve-3d; transition:transform .4s cubic-bezier(0.25,0.46,0.45,0.94); opacity:0;
+  .avatar-turntable{ position:relative; transform-style:preserve-3d; transition:transform .4s cubic-bezier(0.25,0.46,0.45,0.94); opacity:0;
     animation:turntable 9s ease-in-out infinite, card-fade-in 0.9s ease-out .15s forwards; }
   @keyframes turntable{ 0%,100%{ transform:rotateX(3deg) rotateY(-7deg); } 50%{ transform:rotateX(3deg) rotateY(7deg); } }
   @keyframes card-fade-in{ from{ opacity:0; transform:rotateX(3deg) rotateY(-7deg) translateY(14px);} to{ opacity:1; } }
@@ -179,20 +178,39 @@
     pointer-events:none; mix-blend-mode:overlay; }
   
   .avatar-tag{position:absolute; left:14px; bottom:14px; background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); padding:7px 12px; border-radius:2px; font-family:var(--mono); font-size:11.5px; color:var(--red-deep); font-weight:600; letter-spacing:0.3px; border:1px solid var(--red-tint); transform:translateZ(30px); z-index:3;}
-  .avatar-badge{position:absolute; right:8px; bottom:8px; width:62px; height:62px; border-radius:50%; transform:translateZ(40px) rotate(-4deg);
-    background:var(--white); border:1.5px solid var(--ink); display:flex; align-items:center; justify-content:center;
-    box-shadow:0 12px 24px -8px rgba(23,24,26,0.4); z-index:10;}
-  .avatar-badge span{font-family:var(--sans); font-size:24px; font-weight:700; color:var(--red); line-height:1;}
+  
+  /* ---------- Enhanced Aesthetic Px Logo ---------- */
+  .avatar-badge{
+    position:absolute; right:-12px; bottom:16px; width:66px; height:66px; border-radius:50%;
+    transform:translateZ(45px) rotate(-4deg);
+    background:var(--white);
+    padding:3px;
+    box-shadow:0 14px 28px -6px rgba(23,24,26,0.3), 0 0 0 4px var(--white), 0 0 0 5px var(--line);
+    display:flex; align-items:center; justify-content:center; z-index:10;
+    transition:transform .35s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow .35s ease;
+    cursor:default;
+  }
+  .avatar-badge:hover{
+    transform:translateZ(55px) rotate(0deg) scale(1.08);
+    box-shadow:0 18px 36px -6px rgba(200,30,58,0.35), 0 0 0 4px var(--white), 0 0 0 5px var(--red);
+  }
+  .avatar-badge svg{ width:100%; height:100%; display:block; }
+  
   .pulse-ring{position:absolute; inset:-8px; border-radius:24px; border:1.5px solid var(--red); opacity:0; animation:ring 3.2s ease-out infinite; z-index:2;}
   @keyframes ring{ 0%{ opacity:0.5; transform:scale(0.98);} 100%{ opacity:0; transform:scale(1.08);} }
 
-  .wave-hand{position:fixed; top:20px; right:20px; font-size:42px; transform-origin:70% 70%; animation:wave 2.6s ease-in-out 2; filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); z-index:1000;}
+  /* ---------- Waving Hand positioned on top-right of Avatar ---------- */
+  .wave-hand{
+    position:absolute; top:-18px; right:-14px; font-size:40px; transform-origin:70% 70%;
+    animation:wave 2.6s ease-in-out infinite; filter:drop-shadow(0 6px 12px rgba(0,0,0,0.22));
+    z-index:25; pointer-events:none; transform:translateZ(50px);
+  }
   @keyframes wave{
     0%,60%,100%{ transform:rotate(0deg) scale(1); }
-    10%{ transform:rotate(14deg) scale(1.05); } 20%{ transform:rotate(-8deg) scale(1.05); } 30%{ transform:rotate(14deg) scale(1.05); }
-    40%{ transform:rotate(-4deg) scale(1); } 50%{ transform:rotate(10deg) scale(1.05); }
+    10%{ transform:rotate(14deg) scale(1.08); } 20%{ transform:rotate(-8deg) scale(1.08); } 30%{ transform:rotate(14deg) scale(1.08); }
+    40%{ transform:rotate(-4deg) scale(1); } 50%{ transform:rotate(10deg) scale(1.08); }
   }
-  @media (max-width:560px){ .wave-hand{font-size:34px; top:12px; right:12px;} }
+  @media (max-width:560px){ .wave-hand{font-size:32px; top:-14px; right:-10px;} }
 
   /* ---------- Section shell ---------- */
   section{padding:96px 0;}
@@ -392,7 +410,6 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div id="pageLoader" aria-hidden="true"></div>
-<div class="wave-hand" aria-hidden="true">👋</div>
 
 <div class="ekg-rail" aria-hidden="true">
   <svg viewBox="0 0 1000 26" preserveAspectRatio="none">
@@ -450,13 +467,34 @@
       <div class="avatar-card" id="avatarCard">
         <div class="avatar-pedestal"></div>
         <div class="avatar-turntable" id="avatarTurntable">
+          <!-- Waving Hand positioned directly on the top right corner of the avatar -->
+          <div class="wave-hand" aria-hidden="true">👋</div>
           <div class="pulse-ring"></div>
           <div class="avatar-frame">
             <img src="avatar.jpg" width="860" height="1146" alt="3D illustrated avatar of Dr. Vaibhav Gupta in a navy suit with a stethoscope" loading="eager" fetchpriority="high" decoding="async">
             <div class="avatar-tag">MGMC &amp; MYH · Indore</div>
           </div>
-          <div class="avatar-badge" title="Dr. Vaibhav Gupta - Px Logo">
-            <span>Px</span>
+          <!-- High-End Aesthetic Medical Px Logo Badge -->
+          <div class="avatar-badge" title="Dr. Vaibhav Gupta - Prescription &amp; Practice Emblem">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pxBg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#f8eeef"/>
+                </linearGradient>
+                <linearGradient id="pxText" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#d92343"/>
+                  <stop offset="100%" stop-color="#8c0c20"/>
+                </linearGradient>
+                <filter id="pxGlow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+                  <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#c81e3a" flood-opacity="0.3"/>
+                </filter>
+              </defs>
+              <circle cx="32" cy="32" r="30" fill="url(#pxBg)"/>
+              <circle cx="32" cy="32" r="26" stroke="#c81e3a" stroke-width="1" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+              <circle cx="32" cy="32" r="28" stroke="#17181a" stroke-width="1.2" opacity="0.85"/>
+              <text x="32" y="40" font-family="'Fraunces', Georgia, serif" font-size="27" font-weight="700" font-style="italic" text-anchor="middle" fill="url(#pxText)" filter="url(#pxGlow)" letter-spacing="-0.5">Px</text>
+            </svg>
           </div>
         </div>
       </div>
